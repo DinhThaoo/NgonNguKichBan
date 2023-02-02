@@ -1,0 +1,108 @@
+Giới thiệu:
+
+Trình bày form
+- 2 phần: 
+admin: sử dụng nodejs, 
+               sequlize,expessjs, mysql, db viết theo code firs
+user : sử dụng reactjs, redux: luu dl cục bộ , redux-thunk: là 1 mideware dể call api là giao tiếp với redux, 
+taiwin-css: giống thư viện bootstrap
+antdegisn: thư viện giống meterial UI thiết kế giao diện
+axios: call api
+formik and yup: ktra và thao tác với form 
+lodash: thao tác với các function object array in js
+
+Client :
+có các form cơ bản: home, danh mục sp, giới thiệu của hàng, chi tiết sp, giỏ hàng: click thêm vào giỏ hàng->sp chuyển vào giỏ hàng -> hiển thị sp và thông tin sp,....
+-> click thanh toán ->chưa đăng nhập ->thông báo phải đăng nhập
+    		    -> đã đăng nhập -> thanh toán thành công
+			**(sp được lưu trữ trong localstogare)
+-> hóa đơn đã mua hàng đc lưu trữ trong lịch sử mua hàng
+
+
+Admin:
+- có 4 mục chính:
+tài khoản : thông tin tài khoản, phân quyền ntn ? admin và client (**)
+
+Tìm kiếm: gần đúng theo tên: 
+
+phương thức get: lấy dl
+    	    put: sửa
+	    post: thêm
+	    delete: xóa
+MVC: 
+M: tương tác với db 
+V: hiện thị kq theo yêu cầu ng dùng
+C: nhận yêu cầu từ ng dùng, gửi đến cho M xly trả kq đến V để hthi
+
+-------BACKEND
+
+Giải thích Backend: (lưu ý **1 và **2 khác nhau và phải kết hợp cả 2 ms lưu dc ảnh)
+        công nghệ: nodejs, sequelize: modlels để thao tác với mysql,   database: mysql , express js, cors: config lỗi khi liên kết api f-b trong trường cá nhân 
+        get: lấy dl, put: sữa dl, post: thêm mới, delete: xóa dl
+- folder : 
+	config 		-> kết nối database (database là MySQL chạy trền nền MySQL Workbench)
+	controller 	-> xử lý các chức năng nhận request(yêu cầu và dữ liệu) từ frontend và trả
+				về dữ liệu cho fe sau khi xử lý xong
+	middleware	-> HÀM THỰC HIỆN  lưu trữ hình ảnh trên server (**1)
+	migrations	-> Viết theo code first lên folder này để cho reder ra TABLE ở MYSQL
+
+	models		-> Thiết lập các thuộc tính giống TABLE ở MYSQl để có thể truy vấn qua Sequelize
+                -account: hasmany: lket 1 nhiều, belong to: lk 1-1
+
+	public		-> Lưu trữ các hình ảnh				(**2)
+	routers		-> Thiết lập các đường dẫn API
+	seeders		-> Render ra tài khoản Admin sẵn có với lệnh -> npx sequelize-cli db:seed:all
+	untils(nếu có) 	-> setting PORT
+
+async: hàm sử lý bất đồng bộ khi thao tác db
+
+------
+
+LUỒNG CODE CHẠY : 	
+	Khi frontend thực hiện chức năng gọi API bất kì thì -> sẽ vào router để xem đó là API với đường dẫn nào	
+		-> sau đó tìm được đường dẫn API khớp sẽ thực hiện controller tương ứng ngay sau dấu "," của cái đường dẫn đó
+		-> sau khi controller được thực hiện với DATABASE và sẽ trả về xem có thành công hay thất bại 
+		-> frontend dựa vào đó để render dữ liệu và đưa ra thông báo
+
+-------FRONTEND
+
+Giải thích FRONTEND : công nghệ (redux : lưu trữ dữ liệu , antd: hỗ trợ giao diện , tailwindcss : thư viện css , axios : call api , 
+lodash :  xử lý hàm;formik and yup: ktra và thao tác với form ) ; hiện thị hết ở file packsge.json 
+
+-folder	:
+	utils : 	để setup PORT cho trùng với PORT bên backend vừa rồi -> khớp mới gọi được API
+              - Image: Path: đường dẫn ảnh 
+              - ConfigPath: đường dẫn website
+        settings:       cấu hình đường dẫn liên kết với bex
+                        +Domain: Lket với đường dẫn của API
+                        +Domain_IMG: đường dẫn của ảnh 
+	templates :	Các thành phần dùng chung hay lặp lại nhiều lần sẽ được đưa vào template (header và footer) 
+	services	Để setup các đường dẫn API
+             - baseservices: file gốc đn ra 4 pthuc post, get, put,..
+	redux
+	   -Actions	Thực hiện gọi API và có thể lưu dữ liệu vào reducer
+	   - Reducers	Nơi lưu trữ dữ liệu của Redux
+	   - Type	Định nghĩa tên để truy cập đúng đến action, types: key oppion để giao tiếp với redux: phải là tên duy nhất 
+	pages		Là trang web lớn
+	commponets	các thành phần nhỏ mà bị lặp lại nhiều lần của trang web (ví dụ : button hay sản phẩm )
+        app.js và index.js: file qtrong để chạy được bài
+
+-------
+ĐỂ CHẠY DỰ ÁN :
+1. tải MySQL WORKBENCH 
+2. tạo 1 db trong đấy 
+3. vào code chạy lệnh
+
+setup xong chạy bài :
+ 
+1.click package.json (be) : npm run dev
+2.click package.json (fe) : npm start 
+
+
+
+
+ 
+
+
+
+
